@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import static java.lang.Integer.signum;
 
 public class Renderer {
 
@@ -81,7 +82,22 @@ public class Renderer {
     }
 
     public void drawLineBresenhamInt(int x0, int y0, int x1, int y1) {
-        // TODO: zaimplementuj
+        int white = 255 | (255 << 8) | (255 << 16) | (255 << 24);
+
+        int dx = x1-x0;
+        int dy = y1-y0;
+        int D = 2*dy-dx;
+
+        int y = y0;
+
+        for (int x=x0; x<x1; x++) {
+            render.setRGB(x, y, white);
+            if (D > 0) {
+                y++;
+                D=D-2*dx;
+            }
+            D=D+2*dy;
+        } // Oktanty: 8
     }
 
     public void save() throws IOException {
