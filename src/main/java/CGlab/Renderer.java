@@ -12,16 +12,18 @@ public class Renderer {
     public enum LineAlgo { NAIVE, DDA, BRESENHAM, BRESENHAM_INT; }
 
     private BufferedImage render;
-    public final int h = 200;
-    public final int w = 200;
+    public int h = 200;
+    public int w = 200;
 
     private String filename;
     private LineAlgo lineAlgo = LineAlgo.NAIVE;
 
-    public Renderer(String filename) {
-        render = new BufferedImage(200, 200, BufferedImage.TYPE_INT_ARGB);
-        this.filename = filename;
-    }
+   public Renderer(String filename,int width, int height){
+       w = width;
+       h = height;
+       render = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+       this.filename=filename;
+   }
 
     public void drawPoint(int x, int y) {
         int white = 255 | (255 << 8) | (255 << 16) | (255 << 24);
