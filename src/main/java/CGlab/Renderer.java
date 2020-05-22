@@ -38,7 +38,21 @@ public class Renderer {
     }
 
     public void drawLineNaive(int x0, int y0, int x1, int y1) {
-        // TODO: zaimplementuj
+        int Xroznica = Math.max(x0,x1) - Math.min(x0,x1);
+        int Yroznica = Math.max(y0,y1) - Math.min(y0,y1);
+        double licznik = y0 + y1;
+        double mianownik = x0 + x1;
+        double wynik = licznik / mianownik;
+
+        if(x0>x1){
+            int temp = x0;
+            x0=x1;
+            x1=temp;
+        }
+
+        for(int i=0;i<Xroznica;i++){
+            drawPoint(x0+i,(int)Math.round(wynik*(x0+i)));
+        }
     }
 
     public void drawLineDDA(int x0, int y0, int x1, int y1) {
