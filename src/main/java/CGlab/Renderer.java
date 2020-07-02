@@ -6,11 +6,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+
 import static java.lang.Integer.signum;
 
 public class Renderer {
 
-    public enum LineAlgo { NAIVE, DDA, BRESENHAM, BRESENHAM_INT; }
+    public enum LineAlgo {NAIVE, DDA, BRESENHAM, BRESENHAM_INT;}
 
     private BufferedImage render;
     public int h = 200;
@@ -19,12 +20,12 @@ public class Renderer {
     private String filename;
     private LineAlgo lineAlgo = LineAlgo.NAIVE;
 
-   public Renderer(String filename,int width, int height){
-       w = width;
-       h = height;
-       render = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-       this.filename=filename;
-   }
+    public Renderer(String filename, int width, int height) {
+        w = width;
+        h = height;
+        render = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        this.filename = filename;
+    }
 
     public void drawPoint(int x, int y) {
         int white = 255 | (255 << 8) | (255 << 16) | (255 << 24);
@@ -32,27 +33,29 @@ public class Renderer {
     }
 
     public void drawLine(int x0, int y0, int x1, int y1, LineAlgo lineAlgo) {
-        if(lineAlgo == LineAlgo.NAIVE) drawLineNaive(x0, y0, x1, y1);
-        if(lineAlgo == LineAlgo.DDA) drawLineDDA(x0, y0, x1, y1);
-        if(lineAlgo == LineAlgo.BRESENHAM) drawLineBresenham(x0, y0, x1, y1);
-        if(lineAlgo == LineAlgo.BRESENHAM_INT) drawLineBresenhamInt(x0, y0, x1, y1);
+        if (lineAlgo == LineAlgo.NAIVE) drawLineNaive(x0, y0, x1, y1);
+        if (lineAlgo == LineAlgo.DDA) drawLineDDA(x0, y0, x1, y1);
+        if (lineAlgo == LineAlgo.BRESENHAM) drawLineBresenham(x0, y0, x1, y1);
+        if (lineAlgo == LineAlgo.BRESENHAM_INT) drawLineBresenhamInt(x0, y0, x1, y1);
     }
 
     public void drawLineNaive(int x0, int y0, int x1, int y1) {
-        int Xroznica = Math.max(x0,x1) - Math.min(x0,x1);
-        int Yroznica = Math.max(y0,y1) - Math.min(y0,y1);
+        // TODO: zaimplementuj
+        int roznicaX = Math.max(x0, x1) - Math.min(x0, x1);
+        int roznicaY = Math.max(y0, y1) - Math.min(y0, y1);
+
         double licznik = y0 + y1;
         double mianownik = x0 + x1;
-        double wynik = licznik / mianownik;
+        double m = licznik / mianownik;
 
-        if(x0>x1){
+        if (x0 > x1) {
             int temp = x0;
-            x0=x1;
-            x1=temp;
+            x0 = x1;
+            x1 = temp;
         }
 
-        for(int i=0;i<Xroznica;i++){
-            drawPoint(x0+i,(int)Math.round(wynik*(x0+i)));
+        for (int i = 0; i < roznicaX; i++) {
+            drawPoint(x0 + i, (int) Math.round(m * (x0 + i)));
         }
     }
 
@@ -61,6 +64,7 @@ public class Renderer {
     }
 
     public void drawLineBresenham(int x0, int y0, int x1, int y1) {
+        // TODO: zaimplementuj
         int white = 255 | (255 << 8) | (255 << 16) | (255 << 24);
 
         int dx = x1-x0;
@@ -70,7 +74,7 @@ public class Renderer {
 
         int y = y0;
 
-        for (int x=x0; x<=x1; x++) {
+        for (int x=x0; x<x1; x++) {
             render.setRGB(x, y, white);
             err += derr;
             if (err > 0.5) {
@@ -78,10 +82,10 @@ public class Renderer {
                 err -= 1.;
             }
         } // Oktanty: 7,8
-
     }
 
     public void drawLineBresenhamInt(int x0, int y0, int x1, int y1) {
+        // TODO: zaimplementuj
         int white = 255 | (255 << 8) | (255 << 16) | (255 << 24);
 
         int dx = x1-x0;
@@ -123,5 +127,79 @@ public class Renderer {
         g.drawImage(img, 0, 0, w, h, 0, h, w, 0, null);
         g.dispose();
         return flippedImage;
+    }
+
+    public Vec3f barycentric(Vec2f A, Vec2f B, Vec2f C, Vec2f P) {
+        Vec3f barycentric = null;
+        return barycentric;
+    }
+
+    public void drawTriangle(Vec2f A, Vec2f B, Vec2f C){
+
+    }
+
+    //Wektory do obliczeń barycentrycznych
+    public class Vec3i {
+        public int x;
+        public int y;
+        public int z;
+
+        public Vec3i(int x, int y, int z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        @Override
+        public String toString() {
+            return x + " " + y + " " + z;
+        }
+    }
+
+    public class Vec3f {
+        public float x;
+        public float y;
+        public float z;
+
+        public Vec3f(float x, float y, float z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        @Override
+        public String toString() {
+            return x + " " + y + " " + z;
+        }
+    }
+
+    public class Vec2f {
+        public float x;
+        public float y;
+
+        public Vec2f(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public String toString() {
+            return x + " " + y;
+        }
+    }
+
+    public class Vec2i {
+        public int x;
+        public int y;
+
+        public Vec2i(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public String toString() {
+            return x + " " + y;
+        }
     }
 }
